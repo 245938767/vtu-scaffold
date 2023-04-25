@@ -1,0 +1,1 @@
+ dotnet-ef migrations add %~1% -s ./ -p ../VTU.Data.Models -c EntityDbContext

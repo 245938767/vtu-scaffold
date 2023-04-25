@@ -1,0 +1,1 @@
+dotnet ef migrations add InitialCreate -s ./ -p ../VTU.Data.Models -c EntityDbContext

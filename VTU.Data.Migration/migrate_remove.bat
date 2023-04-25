@@ -1,0 +1,1 @@
+ dotnet-ef migrations remove -s ./ -p ../VTU.Data.Models -c EntityDbContext
