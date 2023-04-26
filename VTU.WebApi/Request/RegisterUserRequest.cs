@@ -1,4 +1,4 @@
-namespace WebApplication1.Request;
+namespace VTU.WebApi.Request;
 
 public class RegisterUserRequest
 {

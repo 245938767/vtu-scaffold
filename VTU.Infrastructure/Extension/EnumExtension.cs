@@ -9,7 +9,7 @@ namespace WebApplication1.Infrastructure.Extension
         /// </summary>
         /// <param name="val">需要获取的枚举类型</param>
         /// <returns><see cref="DescriptionAttribute"/>内的信息</returns>
-        public static string? ToDescription(this Enum val)
+        public static string ToDescription(this Enum val)
         {
             var type = val.GetType();
 
@@ -21,7 +21,7 @@ namespace WebApplication1.Infrastructure.Extension
                 ?
                 //如果没有定义描述，就把当前枚举值的对应名称返回
                 val.ToString()
-                : (attributes.Single() as DescriptionAttribute)?.Description;
+                : (attributes.Single() as DescriptionAttribute)?.Description ?? "";
         }
     }
 }

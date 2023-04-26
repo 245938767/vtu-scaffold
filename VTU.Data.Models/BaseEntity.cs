@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.DbModel;
+namespace VTU.Data.Models;
 
 public class BaseEntity
 {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using VTU.Models;
+using VTU.Infrastructure.Constant;
 using VTU.Service.Helper;
-using WebApplication1.Infrastructure.Constant;
 
 namespace VTU.Service.Filters
 {
@@ -41,7 +40,7 @@ namespace VTU.Service.Filters
         {
             var url = context.HttpContext.Request.Path;
 
-            LoginUser? info = JwtHelper.GetLoginUser(context.HttpContext);
+            var info = JwtHelper.GetLoginUser(context.HttpContext);
             //检查信息
             if (info == null)
             {
@@ -77,6 +76,7 @@ namespace VTU.Service.Filters
             }
 
 
+            //有权限或者是通用（Common）层就通过
             if (HasRole || Permission.Equals("common")) return base.OnActionExecutionAsync(context, next);
             Console.WriteLine($"用户{info.UserName}没有权限访问{url}，当前权限[{Permission}]");
             JsonResult result = new(new

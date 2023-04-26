@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using VTU.Data.Models.Menus;
 using VTU.Data.Models.Users;
-using WebApplication1.DbModel;
-using WebApplication1.Infrastructure.Enums;
+using VTU.Infrastructure.Enums;
 
 namespace VTU.Data.Models.Roles;
 

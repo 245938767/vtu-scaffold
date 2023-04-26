@@ -11,10 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\VTU.Data.Models\VTU.Data.Models.csproj" />
-      <ProjectReference Include="..\VTU.Infrastructure\VTU.Infrastructure.csproj" />
-      <ProjectReference Include="..\VTU.Models\VTU.Models.csproj" />
-      <ProjectReference Include="..\VTU.Service\VTU.Service.csproj" />
+        <ProjectReference Include="..\VTU.BaseApi\VTU.BaseApi.csproj"/>
     </ItemGroup>
 
 </Project>

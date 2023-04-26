@@ -2,9 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using VTU.Data.Models.Roles;
+using VTU.Infrastructure.Enums;
 using VTU.Infrastructure.Helper;
-using WebApplication1.DbModel;
-using WebApplication1.Infrastructure.Enums;
 
 namespace VTU.Data.Models.Users;
 

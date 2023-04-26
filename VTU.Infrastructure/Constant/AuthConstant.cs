@@ -1,4 +1,4 @@
-namespace WebApplication1.Infrastructure.Constant;
+namespace VTU.Infrastructure.Constant;
 
 public class GlobalConstant
 {

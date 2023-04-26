@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using VTU.Data.Models;
 using VTU.Infrastructure;
+using VTU.Infrastructure.Filters;
 using VTU.Service.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(x => x.Filters.Add<GlobalExceptionFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton(new AppSettingInstants(builder.Configuration));

@@ -2,8 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using VTU.Data.Models.Roles;
-using WebApplication1.DbModel;
-using WebApplication1.Infrastructure.Enums;
+using VTU.Infrastructure.Enums;
 
 namespace VTU.Data.Models.Menus;
 

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using VTU.Data.Models.Menus;
 using VTU.Data.Models.Roles;
-using WebApplication1.Infrastructure.Enums;
+using VTU.Infrastructure.Enums;
 
 namespace VTU.Data.Models;
 

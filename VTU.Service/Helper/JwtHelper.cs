@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using VTU.Infrastructure;
+using VTU.Infrastructure.Constant;
 using VTU.Infrastructure.Extension;
 using VTU.Models;
-using WebApplication1.Infrastructure.Constant;
 
 namespace VTU.Service.Helper;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace WebApplication1.Infrastructure.Enums;
+namespace VTU.Infrastructure.Enums;
 
 [Flags]
 public enum ValidStatus
