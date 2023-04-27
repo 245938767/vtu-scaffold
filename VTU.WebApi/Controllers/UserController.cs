@@ -18,10 +18,16 @@ public class UserController : BaseController
         _userService = userService;
     }
 
-    [HttpGet("userInfo")]
+    [HttpGet("/userInfoList")]
     // [PermissionFilter("user:list")]
-    public JsonObject<PagedInfo<UserResponse>> GetUserinfo([FromQuery] UserQueryRequest userQueryRequest)
+    public JsonObject<PagedInfo<UserResponse>> GetUserinfoList([FromQuery] UserQueryRequest userQueryRequest)
     {
         return _userService.GetUserList(userQueryRequest);
+    }
+
+    [HttpGet("/userInfo")]
+    public JsonObject<UserResponse> getUserInfo()
+    {
+        return _userService.GetUserById(CurrentUId());
     }
 }

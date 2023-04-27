@@ -28,9 +28,9 @@ public class LoginController : BaseController
     }
 
     [HttpPost("/loginOut")]
-    public JsonObject<string> LoginOut(long userId)
+    public JsonObject<string> LoginOut()
     {
-        _userService.LoginOut(userId);
+        _userService.LoginOut(CurrentUId());
         return "退出登录成功";
     }
 

@@ -74,7 +74,7 @@ public class UserServiceImpl : IUserService
 
     public UserResponse GetUserById(long id)
     {
-        var firstOrDefault = _dbContext.Users.FirstOrDefault(x => x.Id.Equals(id));
+        var firstOrDefault = _dbContext.Users.FirstOrDefault(x => x.Id == id);
         if (firstOrDefault == null)
         {
             throw new BusinessException("用户不存在");

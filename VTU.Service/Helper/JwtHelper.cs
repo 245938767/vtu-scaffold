@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using VTU.Infrastructure;
 using VTU.Infrastructure.Constant;
 using VTU.Infrastructure.Extension;
@@ -27,25 +26,42 @@ public class JwtHelper
     }
 
     /// <summary>
+    /// 获取用户身份信息
+    /// </summary>
+    /// <param name="httpContext"></param>
+    /// <returns></returns>
+    public static IEnumerable<Claim>? GetLoginUserClaims(HttpContext httpContext)
+    {
+        var token = httpContext.GetToken();
+        return string.IsNullOrEmpty(token) ? null : ParseToken(token);
+    }
+
+    /// <summary>
     /// 生成token
     /// </summary>
     /// <param name="claims"></param>
     /// <param name="loginUser"></param>
     /// <returns></returns>
-    public static string GenerateJwtToken(IEnumerable<Claim> claims, LoginUser loginUser)
+    public static string GenerateJwtToken(List<Claim> claims, LoginUser loginUser)
     {
+        var dateTime = DateTime.Now;
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(AppSettingInstants.GetAppSettings().JwtSettings.SecretKey);
         var expires = AppSettingInstants.GetAppSettings().JwtSettings.Expire;
+        var issuer = AppSettingInstants.GetAppSettings().JwtSettings.Issuer;
+        var audience = AppSettingInstants.GetAppSettings().JwtSettings.Audience;
+        claims.Add(new Claim("Audience", audience));
+        claims.Add(new Claim("Issuer", issuer));
         //保存缓存
         CacheHelper.SetCache(GlobalConstant.UserPermKey + loginUser.UserId, loginUser, expires);
         //生成token
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Issuer = AppSettingInstants.GetAppSettings().JwtSettings.Issuer,
-            Audience = AppSettingInstants.GetAppSettings().JwtSettings.Audience,
+            Issuer = issuer,
+            Audience = audience,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddMinutes(expires),
+            IssuedAt = dateTime,
+            Expires = dateTime.AddMinutes(expires),
             TokenType = "Bearer",
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -107,9 +123,7 @@ public class JwtHelper
     {
         try
         {
-            var userData = jwtToken.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid)?.Value;
-            // var loginUser = JsonConvert.DeserializeObject<LoginUser>(userData);
-
+            var userData = jwtToken.FirstOrDefault(x => x.Type == ClaimConstant.PrimarySid)?.Value;
             var loginUser = (LoginUser)CacheHelper.GetCache(GlobalConstant.UserPermKey + userData);
             if (loginUser == null) return null;
             var permissions = loginUser.Permissions;
@@ -133,19 +147,12 @@ public class JwtHelper
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    public static IEnumerable<Claim> AddClaims(LoginUser user)
+    public static List<Claim> AddClaims(LoginUser user)
     {
-        if (user.Permissions.Count > 50)
-        {
-            user.Permissions = new List<string>();
-        }
-
         var claims = new List<Claim>()
         {
-            new(ClaimTypes.PrimarySid, user.UserId.ToString()),
-            new(ClaimTypes.Name, user.UserName),
-            //数据保存到缓存中
-            // new(ClaimTypes.UserData, JsonConvert.SerializeObject(user))
+            new(ClaimConstant.PrimarySid, user.UserId.ToString()),
+            new(ClaimConstant.Name, user.UserName),
         };
 
         return claims;

@@ -77,7 +77,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+//开启缓存
+app.UseResponseCaching();
 
 app.MapControllers();
 
