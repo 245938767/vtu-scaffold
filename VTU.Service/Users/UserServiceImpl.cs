@@ -8,6 +8,7 @@ using VTU.Infrastructure.Extension;
 using VTU.Infrastructure.Models;
 using VTU.Models;
 using VTU.Models.Request.Users;
+using VTU.Models.Response;
 using VTU.Service.Helper;
 
 namespace VTU.Service.Users;
@@ -22,9 +23,9 @@ public class UserServiceImpl : IUserService
         _dbContext = dbContext;
     }
 
-    public PagedInfo<User> getUserList(UserQueryRequest userQueryRequest)
+    public PagedInfo<UserResponse> getUserList(UserQueryRequest userQueryRequest)
     {
-        var queryable = _dbContext.Users.AsQueryable().OrderByDescending(x => x.Id).ToPage(userQueryRequest);
+        var queryable = _dbContext.Users.AsQueryable().OrderByDescending(x => x.Id).ToPage<User,UserResponse>(userQueryRequest);
         return queryable;
     }
 
