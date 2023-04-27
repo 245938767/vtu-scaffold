@@ -30,18 +30,22 @@ public class JwtHelper
     /// 生成token
     /// </summary>
     /// <param name="claims"></param>
-    /// <param name="jwtSettings"></param>
+    /// <param name="loginUser"></param>
     /// <returns></returns>
-    public static string GenerateJwtToken(List<Claim> claims)
+    public static string GenerateJwtToken(IEnumerable<Claim> claims, LoginUser loginUser)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(AppSettingInstants.GetAppSettings().JwtSettings.SecretKey);
+        var expires = AppSettingInstants.GetAppSettings().JwtSettings.Expire;
+        //保存缓存
+        CacheHelper.SetCache(GlobalConstant.UserPermKey + loginUser.UserId, loginUser, expires);
+        //生成token
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Issuer = AppSettingInstants.GetAppSettings().JwtSettings.Issuer,
             Audience = AppSettingInstants.GetAppSettings().JwtSettings.Audience,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddMinutes(AppSettingInstants.GetAppSettings().JwtSettings.Expire),
+            Expires = DateTime.Now.AddMinutes(expires),
             TokenType = "Bearer",
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -103,16 +107,18 @@ public class JwtHelper
     {
         try
         {
-            var userData = jwtToken.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value;
-            var loginUser = JsonConvert.DeserializeObject<LoginUser>(userData);
-            var permissions = (List<string>)CacheHelper.GetCache(GlobalConstant.UserPermKey + loginUser.UserId);
-            if (loginUser?.UserName == GlobalConstant.AdminRole)
+            var userData = jwtToken.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid)?.Value;
+            // var loginUser = JsonConvert.DeserializeObject<LoginUser>(userData);
+
+            var loginUser = (LoginUser)CacheHelper.GetCache(GlobalConstant.UserPermKey + userData);
+            if (loginUser == null) return null;
+            var permissions = loginUser.Permissions;
+            if (loginUser.UserName == GlobalConstant.AdminRole)
             {
                 permissions = new List<string>() { GlobalConstant.AdminPerm };
             }
 
-            if (permissions == null) return null;
-            loginUser!.Permissions = permissions;
+            loginUser.Permissions = permissions;
             return loginUser;
         }
         catch (Exception ex)
@@ -127,7 +133,7 @@ public class JwtHelper
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    public static List<Claim> AddClaims(LoginUser user)
+    public static IEnumerable<Claim> AddClaims(LoginUser user)
     {
         if (user.Permissions.Count > 50)
         {
@@ -138,7 +144,8 @@ public class JwtHelper
         {
             new(ClaimTypes.PrimarySid, user.UserId.ToString()),
             new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.UserData, JsonConvert.SerializeObject(user))
+            //数据保存到缓存中
+            // new(ClaimTypes.UserData, JsonConvert.SerializeObject(user))
         };
 
         return claims;

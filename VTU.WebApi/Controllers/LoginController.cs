@@ -24,7 +24,14 @@ public class LoginController : BaseController
     [HttpPost("/login")]
     public JsonObject<string> LoginUser([FromBody] LoginRequest loginRequest)
     {
-        return _userService.login(loginRequest);
+        return _userService.Login(loginRequest);
+    }
+
+    [HttpPost("/loginOut")]
+    public JsonObject<string> LoginOut(long userId)
+    {
+        _userService.LoginOut(userId);
+        return "退出登录成功";
     }
 
     [HttpPost("/register")]

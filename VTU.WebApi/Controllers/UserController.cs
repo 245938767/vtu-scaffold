@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using VTU.BaseApi.Controller;
-using VTU.Data.Models.Users;
 using VTU.Infrastructure.Models;
 using VTU.Models.Request.Users;
 using VTU.Models.Response;
@@ -23,6 +22,6 @@ public class UserController : BaseController
     // [PermissionFilter("user:list")]
     public JsonObject<PagedInfo<UserResponse>> GetUserinfo([FromQuery] UserQueryRequest userQueryRequest)
     {
-        return _userService.getUserList(userQueryRequest);
+        return _userService.GetUserList(userQueryRequest);
     }
 }
