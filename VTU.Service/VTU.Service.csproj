@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\VTU.Data.Models\VTU.Data.Models.csproj" />
+      <ProjectReference Include="..\VTU.Models\VTU.Models.csproj" />
     </ItemGroup>
 
 </Project>

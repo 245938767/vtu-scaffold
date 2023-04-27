@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\VTU.Data.Models\VTU.Data.Models.csproj" />
+      <Folder Include="Response\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\VTU.Infrastructure\VTU.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

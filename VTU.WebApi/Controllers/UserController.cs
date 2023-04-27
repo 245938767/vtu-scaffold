@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using VTU.BaseApi.Controller;
-using VTU.Data.Models;
 using VTU.Data.Models.Users;
-using VTU.Infrastructure.Exceptions;
 using VTU.Infrastructure.Models;
+using VTU.Models.Request.Users;
+using VTU.Service.Users;
 
 namespace VTU.WebApi.Controllers;
 
@@ -11,19 +11,17 @@ namespace VTU.WebApi.Controllers;
 [Route("[controller]/v1")]
 public class UserController : BaseController
 {
-    private readonly EntityDbContext _dbContext;
+    private readonly IUserService _userService;
 
-    public UserController(EntityDbContext dbContext)
+    public UserController(IUserService userService)
     {
-        _dbContext = dbContext;
+        _userService = userService;
     }
 
     [HttpGet("userInfo")]
     // [PermissionFilter("user:list")]
-    public JsonObject<ICollection<User>> getUserinfo(int page = 1, int pageSize = 20)
+    public JsonObject<PagedInfo<User>> getUserinfo([FromBody] UserQueryRequest userQueryRequest)
     {
-        var queryable = _dbContext.Users.AsQueryable().OrderByDescending(x => x.Id).Skip((page - 1) * pageSize)
-            .Take(pageSize).ToList();
-        return queryable;
+        return _userService.getUserList(userQueryRequest);
     }
 }
