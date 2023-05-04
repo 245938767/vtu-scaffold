@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using VTU.Data.Models.Roles;
 using VTU.Infrastructure.Enums;
+using VTU.Infrastructure.Exceptions;
 using VTU.Infrastructure.Helper;
 
 namespace VTU.Data.Models.Users;
@@ -32,8 +33,8 @@ public class User : BaseEntity
     /// <summary>
     /// 用户性别（0男 1女 2未知）
     /// </summary>
-    [Description("用户性别（0男 1女 2未知）")]
-    public string Gender { get; set; }
+    [Description("用户性别")]
+    public Gender Gender { get; set; }
 
     [Description("密码加密的盐")] public string Salt { get; set; }
 
@@ -87,26 +88,57 @@ public class User : BaseEntity
     /// <param name="phoneNumber"></param>
     /// <param name="gender"></param>
     /// <param name="roles"></param>
-    public User create(string userName, string password, string? email, string phoneNumber, string gender,
+    public User create(string userName, string password, string? email, string phoneNumber, int gender,
         List<Role> roles)
     {
         this.NickName = userName;
         this.UserName = userName;
         this.Phonenumber = phoneNumber;
         this.Email = email;
-        this.Gender = gender;
+        this.Gender = (Gender)Enum.ToObject(typeof(Gender), gender);
         this.Roles = roles;
         preCreateTime();
-        setPassword(password);
+        SetPassword(password);
         return this;
     }
 
-    public void setPassword(string password)
+    /// <summary>
+    /// 设置密码
+    /// </summary>
+    /// <param name="password"></param>
+    public void SetPassword(string password)
     {
         this.Salt = PasswordHelper.GenerateSalt();
         this.Password = PasswordHelper.EncryptPassword(password, this.Salt);
     }
 
+    /// <summary>
+    /// 用户登录方法
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="ip"></param>
+    /// <exception cref="BusinessException"></exception>
+    public void ValidUser(string password, string? ip)
+    {
+        if (!Password.Equals(validatePassword(password)))
+        {
+            throw new BusinessException("密码错误");
+        }
+
+        if (Status == ValidStatus.UnValid)
+        {
+            throw new BusinessException("用户已停用");
+        }
+
+        LoginIP = ip;
+        LoginDate = DateTime.Now;
+    }
+
+    /// <summary>
+    /// 校验密码
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public string validatePassword(string password)
     {
         return PasswordHelper.EncryptPassword(password, this.Salt);

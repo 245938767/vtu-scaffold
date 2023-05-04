@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VTU.Infrastructure.Constant;
 using VTU.Infrastructure.Exceptions;
+using VTU.Infrastructure.Extension;
 using VTU.Service.Helper;
 
 namespace VTU.BaseApi.Controller;
@@ -36,5 +37,14 @@ public class BaseController : ControllerBase
         }
 
         return value;
+    }
+
+    /// <summary>
+    /// 获得IP地址
+    /// </summary>
+    /// <returns></returns>
+    protected string getIP()
+    {
+        return HttpContext.GetClientUserIp();
     }
 }

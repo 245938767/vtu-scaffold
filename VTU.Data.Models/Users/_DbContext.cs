@@ -37,14 +37,14 @@ public class UserDbModule : DbModule
             NickName = "admin",
             Email = "dw@xmail.com",
             Phonenumber = "12345678909",
-            Gender = "1",
+            Gender = Gender.Male,
             Status = ValidStatus.UnValid,
             DelFlag = ValidStatus.UnValid,
             LoginIP = null,
             LoginDate = null,
             Roles = null,
         };
-        user.setPassword("admin123");
+        user.SetPassword("admin123");
         return user;
     }
 }

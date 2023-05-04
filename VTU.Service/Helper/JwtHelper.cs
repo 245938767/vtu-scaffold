@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using VTU.Data.Models;
 using VTU.Infrastructure;
 using VTU.Infrastructure.Constant;
 using VTU.Infrastructure.Extension;
@@ -76,13 +77,16 @@ public class JwtHelper
     /// <returns></returns>
     public static TokenValidationParameters ValidParameters()
     {
-        var key = Encoding.ASCII.GetBytes(AppSettingInstants.GetAppSettings().JwtSettings.SecretKey);
+        var jwtSettings = AppSettingInstants.GetAppSettings().JwtSettings;
+        var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
 
         var tokenDescriptor = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = jwtSettings.Audience,
+            ValidIssuer = jwtSettings.Issuer,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(30)

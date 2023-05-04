@@ -3,11 +3,11 @@
 /// <summary>
 /// 标记服务
 /// 如何使用？
-/// 1、如果服务是本身 直接在类上使用[AppService]
-/// 2、如果服务是接口 在类上使用 [AppService(ServiceType = typeof(实现接口))]
+/// 1、如果服务是本身 直接在类上使用[Service]
+/// 2、如果服务是接口 在类上使用 [Service(ServiceType = typeof(实现接口))]
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class AppServiceAttribute : System.Attribute
+public class ServiceAttribute : System.Attribute
 {
     /// <summary>
     /// 服务声明周期

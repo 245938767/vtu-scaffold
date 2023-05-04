@@ -27,7 +27,7 @@ namespace VTU.Infrastructure.Extension
             var assembly = Assembly.Load(item);
             foreach (var type in assembly.GetTypes())
             {
-                var serviceAttribute = type.GetCustomAttribute<AppServiceAttribute>();
+                var serviceAttribute = type.GetCustomAttribute<ServiceAttribute>();
 
                 if (serviceAttribute != null)
                 {

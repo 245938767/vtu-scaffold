@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using VTU.Data.Models.Menus;
 using VTU.Data.Models.Roles;
+using VTU.Infrastructure.Constant;
 using VTU.Infrastructure.Enums;
 
 namespace VTU.Data.Models;
@@ -17,10 +18,10 @@ public class RoleDbModule : DbModule
         var roleModel = modelBuilder.Entity<Role>();
         roleModel.HasMany<Menu>(e => e.Menus).WithMany(x => x.Roles)
             .UsingEntity("RoleMenuTable");
-        roleModel.HasData(initRole());
+        roleModel.HasData(InitRole());
     }
 
-    private Role initRole()
+    private static Role InitRole()
     {
         return
             new()
@@ -29,9 +30,9 @@ public class RoleDbModule : DbModule
                 CreateDateTime = DateTime.Now,
                 UpdateDateTime = DateTime.Now,
                 RoleName = "管理员",
-                RoleKey = "*:*:*",
+                RoleKey = GlobalConstant.AdminRole,
                 RoleSort = 0,
-                Status = ValidStatus.UnValid,
+                Status = ValidStatus.Valid,
                 DelFlag = ValidStatus.UnValid,
                 DataScope = "1",
                 MenuCheckStrictly = false,

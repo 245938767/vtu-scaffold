@@ -1,7 +1,7 @@
 ﻿using VTU.Data.Models.Roles;
 using VTU.Data.Models.Users;
 
-namespace VTU.Models;
+namespace VTU.Data.Models;
 
 /// <summary>
 /// 登录用户信息存储
