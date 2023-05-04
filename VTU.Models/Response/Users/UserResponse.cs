@@ -1,9 +1,8 @@
 using System.ComponentModel;
-using Newtonsoft.Json;
 using VTU.Data.Models.Roles;
 using VTU.Infrastructure.Enums;
 
-namespace VTU.Models.Response;
+namespace VTU.Models.Response.Users;
 
 public class UserResponse : Infrastructure.Models.Response
 {
@@ -45,5 +44,5 @@ public class UserResponse : Infrastructure.Models.Response
     public DateTime? LoginDate { get; set; }
 
 
-    [JsonIgnore] public virtual List<Role> Roles { get; set; }
+    public virtual List<Role> Roles { get; set; }
 }

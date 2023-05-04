@@ -1,6 +1,7 @@
 using VTU.Infrastructure.Models;
 using VTU.Models.Request.Users;
 using VTU.Models.Response;
+using VTU.Models.Response.Users;
 
 namespace VTU.Service.Users;
 

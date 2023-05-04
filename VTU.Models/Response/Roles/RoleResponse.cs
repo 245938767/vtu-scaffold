@@ -1,18 +1,11 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
+using System.ComponentModel;
 using VTU.Data.Models.Menus;
 using VTU.Data.Models.Users;
 using VTU.Infrastructure.Enums;
 
-namespace VTU.Data.Models.Roles;
+namespace VTU.Models.Response.Roles;
 
-/// <summary>
-/// 角色表 sys_role
-/// </summary>
-[Table("role")]
-[Description("角色表")]
-public class Role : BaseEntity
+public class RoleResponse : Infrastructure.Models.Response
 {
     /// <summary>
     /// 角色名称
@@ -38,11 +31,6 @@ public class Role : BaseEntity
     [Description("角色状态")]
     public ValidStatus Status { get; set; }
 
-    /// <summary>
-    /// 删除标志
-    /// </summary>
-    [Description("删除标志")]
-    public ValidStatus DelFlag { get; set; } = ValidStatus.UnValid;
 
     /// <summary>
     /// 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限））
@@ -65,46 +53,7 @@ public class Role : BaseEntity
     /// <summary>
     /// 菜单组
     /// </summary>
-    [JsonIgnore]
     public virtual List<Menu> Menus { get; set; }
 
-    [JsonIgnore] public virtual List<User> Users { get; set; }
-
-
-    public virtual bool IsAdmin()
-    {
-        return IsAdmin(Id);
-    }
-
-    public static bool IsAdmin(long roleId)
-    {
-        return 1 == roleId;
-    }
-
-    public Role create(string roleName, string roleKey, int? sort, string? dataScope)
-    {
-        this.RoleName = roleName;
-        this.RoleKey = roleKey;
-        this.RoleSort = sort ?? 1;
-        this.DataScope = dataScope ?? "1";
-        preCreateTime();
-        return this;
-    }
-
-    public Role update(string? roleName, string? roleKey, int? sort, string? dataScope)
-    {
-        this.RoleName = roleName ?? RoleName;
-        this.RoleKey = roleKey ?? RoleKey;
-        this.RoleSort = sort ?? RoleSort;
-        this.DataScope = dataScope ?? DataScope;
-        preUpdateTime();
-        return this;
-    }
-
-    public Role updateMenu(List<Menu> menus)
-    {
-        this.Menus = menus;
-        preUpdateTime();
-        return this;
-    }
+    public virtual List<User> Users { get; set; }
 }

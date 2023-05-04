@@ -11,6 +11,7 @@ using VTU.Infrastructure.Extension;
 using VTU.Infrastructure.Models;
 using VTU.Models.Request.Users;
 using VTU.Models.Response;
+using VTU.Models.Response.Users;
 using VTU.Service.Helper;
 
 namespace VTU.Service.Users;
@@ -32,70 +33,9 @@ public class UserServiceImpl : IUserService
         return queryable;
     }
 
-    public string Login(LoginRequest loginRequest, string? ip)
-    {
-        var user = _dbContext.Users.Include(x => x.Roles).FirstOrDefault(x =>
-            x.UserName.Equals(loginRequest.UserName));
-        if (user == null)
-        {
-            throw new BusinessException("用户不存在");
-        }
-
-        //校验用户密码信息并设置
-        user.ValidUser(loginRequest.Password, ip);
-
-        //检查用户是否已经登录
-        var cache = CacheHelper.GetCache(GlobalConstant.UserPermKey + user.Id);
-        if (cache != null)
-        {
-            throw new BusinessException("用户已登录");
-        }
-
-        var loginUserRoles = user.Roles.Select(x => x.Id);
-        //初始化菜单
-        var menuList = (from userRole in user.Roles where userRole.IsAdmin() select GlobalConstant.AdminPerm).ToList();
-        var roles = _dbContext.Roles.Include(x => x.Menus).Where(x => loginUserRoles.Contains(x.Id)).ToList();
-        //获得menu的List数据
-        foreach (var loginUserRole in roles)
-        {
-            menuList.AddRange(loginUserRole.Menus.Select(x => x.Perms));
-        }
-
-        var loginUser = new LoginUser(user, user.Roles, menuList);
-        //生成token
-        var generateJwtToken = JwtHelper.GenerateJwtToken(JwtHelper.AddClaims(loginUser), loginUser);
-        //保存用户登录时的修改信息（ip/登录时间）
-        _dbContext.Update(user);
-        _dbContext.SaveChanges();
-        return generateJwtToken;
-    }
-
-    public void LoginOut(long userId)
-    {
-        CacheHelper.Remove($"{GlobalConstant.UserPermKey}{userId}");
-    }
-
-    public void register(RegisterUserRequest registerUserRequest)
-    {
-        ValidUserName(registerUserRequest.UserName, "用户已注册");
-
-        //获得role
-        var queryable = _dbContext.Roles.Where(x => registerUserRequest.RoleId == x.Id).ToList();
-        //创建用户基础信息
-        var user = new User();
-        user.create(registerUserRequest.UserName, registerUserRequest.Password, registerUserRequest.email,
-            registerUserRequest.phoneNumber, registerUserRequest.sex, queryable);
-        _dbContext.Users.Add(user);
-        var x = _dbContext.SaveChanges();
-        if (x <= 0)
-        {
-            throw new BusinessException("用户注册失败");
-        }
-    }
-
     public UserResponse GetUserById(long id)
     {
-        var firstOrDefault = _dbContext.Users.FirstOrDefault(x => x.Id == id);
+        var firstOrDefault = _dbContext.Users.Include(x => x.Roles).FirstOrDefault(x => x.Id == id);
         if (firstOrDefault == null)
         {
             throw new BusinessException("用户不存在");
@@ -183,6 +123,72 @@ public class UserServiceImpl : IUserService
         _dbContext.Remove(firstOrDefaultUser);
         _dbContext.SaveChanges();
     }
+
+
+    #region LoginService
+
+    public string Login(LoginRequest loginRequest, string? ip)
+    {
+        var user = _dbContext.Users.Include(x => x.Roles).FirstOrDefault(x =>
+            x.UserName.Equals(loginRequest.UserName));
+        if (user == null)
+        {
+            throw new BusinessException("用户不存在");
+        }
+
+        //校验用户密码信息并设置
+        user.ValidUser(loginRequest.Password, ip);
+
+        //检查用户是否已经登录
+        var cache = CacheHelper.GetCache(GlobalConstant.UserPermKey + user.Id);
+        if (cache != null)
+        {
+            throw new BusinessException("用户已登录");
+        }
+
+        var loginUserRoles = user.Roles.Select(x => x.Id);
+        //初始化菜单
+        var menuList = (from userRole in user.Roles where userRole.IsAdmin() select GlobalConstant.AdminPerm).ToList();
+        var roles = _dbContext.Roles.Include(x => x.Menus).Where(x => loginUserRoles.Contains(x.Id)).ToList();
+        //获得menu的List数据
+        foreach (var loginUserRole in roles)
+        {
+            menuList.AddRange(loginUserRole.Menus.Select(x => x.Perms));
+        }
+
+        var loginUser = new LoginUser(user, user.Roles, menuList);
+        //生成token
+        var generateJwtToken = JwtHelper.GenerateJwtToken(JwtHelper.AddClaims(loginUser), loginUser);
+        //保存用户登录时的修改信息（ip/登录时间）
+        _dbContext.Update(user);
+        _dbContext.SaveChanges();
+        return generateJwtToken;
+    }
+
+    public void LoginOut(long userId)
+    {
+        CacheHelper.Remove($"{GlobalConstant.UserPermKey}{userId}");
+    }
+
+    public void register(RegisterUserRequest registerUserRequest)
+    {
+        ValidUserName(registerUserRequest.UserName, "用户已注册");
+
+        //获得role
+        var queryable = _dbContext.Roles.Where(x => registerUserRequest.RoleId == x.Id).ToList();
+        //创建用户基础信息
+        var user = new User();
+        user.create(registerUserRequest.UserName, registerUserRequest.Password, registerUserRequest.email,
+            registerUserRequest.phoneNumber, registerUserRequest.sex, queryable);
+        _dbContext.Users.Add(user);
+        var x = _dbContext.SaveChanges();
+        if (x <= 0)
+        {
+            throw new BusinessException("用户注册失败");
+        }
+    }
+
+    #endregion
 
     private void ValidUserName(string userName, string? errorMessage = "用户已经存在")
     {
