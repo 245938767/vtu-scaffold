@@ -27,10 +27,11 @@ public class RoleController : BaseController
         return _roleService.SelectRoleById(roleId);
     }
 
-    [HttpPost("/create")]
     [PermissionFilter("role:create")]
+    [HttpPost("/createRole")]
     public JsonObject<string> CreateRole([FromBody] CreateRoleRequest createRoleRequest)
     {
-        return _roleService.InsertRole(createRoleRequest).ToString();
+        _roleService.InsertRole(createRoleRequest);
+        return "";
     }
 }

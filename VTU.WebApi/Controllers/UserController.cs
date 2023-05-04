@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using VTU.BaseApi.Controller;
 using VTU.Infrastructure.Models;
 using VTU.Models.Request.Users;
-using VTU.Models.Response;
 using VTU.Models.Response.Users;
 using VTU.Service.Filters;
 using VTU.Service.Users;
@@ -49,7 +48,7 @@ public class UserController : BaseController
     /// <param name="createUserRequest"></param>
     /// <returns></returns>
     [PermissionFilter("user:create")]
-    [HttpPost("/create")]
+    [HttpPost("/createUser")]
     public JsonObject<string> CreateUser([FromBody] CreateUserRequest createUserRequest)
     {
         _userService.CreateUser(createUserRequest);
