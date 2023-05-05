@@ -10,7 +10,7 @@ using VTU.Infrastructure.Models;
 using VTU.Models.Request.Roles;
 using VTU.Models.Response.Roles;
 
-namespace VTU.Service.Users;
+namespace VTU.Service.Roles;
 
 [Service(ServiceType = typeof(IRoleService), ServiceLifetime = LifeTime.Transient)]
 public class RoleServiceImpl : IRoleService

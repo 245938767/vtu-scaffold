@@ -4,7 +4,7 @@ using VTU.Infrastructure.Models;
 using VTU.Models.Request.Roles;
 using VTU.Models.Response.Roles;
 using VTU.Service.Filters;
-using VTU.Service.Users;
+using VTU.Service.Roles;
 
 namespace VTU.WebApi.Controllers;
 

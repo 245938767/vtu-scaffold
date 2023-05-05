@@ -4,7 +4,6 @@ namespace VTU.Models.Request.Roles;
 
 public class CreateRoleRequest
 {
-
     /// <summary>
     /// 角色名称
     /// </summary>
@@ -15,7 +14,7 @@ public class CreateRoleRequest
     /// 角色权限
     /// </summary>
     [Description("角色权限")]
-    public string? RoleKey { get; set; }
+    public string RoleKey { get; set; }
 
     /// <summary>
     /// 角色排序
