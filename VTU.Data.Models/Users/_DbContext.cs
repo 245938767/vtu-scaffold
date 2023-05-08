@@ -38,7 +38,7 @@ public class UserDbModule : DbModule
             Email = "dw@xmail.com",
             Phonenumber = "12345678909",
             Gender = Gender.Male,
-            Status = ValidStatus.UnValid,
+            Status = ValidStatus.Valid,
             DelFlag = ValidStatus.UnValid,
             LoginIP = null,
             LoginDate = null,
