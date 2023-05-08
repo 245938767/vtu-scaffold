@@ -78,14 +78,12 @@ namespace VTU.Data.Models.Migrations
                         .HasComment("创建时间");
 
                     b.Property<string>("Icon")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasComment("菜单图标");
 
-                    b.Property<string>("IsCache")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("是否缓存（1缓存 0不缓存）");
+                    b.Property<int>("IsCache")
+                        .HasColumnType("int")
+                        .HasComment("是否缓存(0=禁用,1=启用)");
 
                     b.Property<int>("IsFrame")
                         .HasColumnType("int")
@@ -113,8 +111,8 @@ namespace VTU.Data.Models.Migrations
                         .HasColumnType("int")
                         .HasComment("显示顺序");
 
-                    b.Property<long?>("ParentId")
-                        .HasColumnType("bigint")
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int")
                         .HasComment("父Id");
 
                     b.Property<string>("Path")
@@ -156,6 +154,27 @@ namespace VTU.Data.Models.Migrations
                     b.ToTable("t_menu", t =>
                         {
                             t.HasComment("菜单表");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Component = "",
+                            CreateDateTime = new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1390),
+                            IsCache = 0,
+                            IsFrame = 0,
+                            MenuName = "系统设置",
+                            MenuNameKey = "system",
+                            MenuType = "M",
+                            OrderNum = 0,
+                            ParentId = 0,
+                            Path = "/system",
+                            Perms = "",
+                            Status = 1,
+                            SubNum = 0,
+                            UpdateDateTime = new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1390),
+                            Visible = 1
                         });
                 });
 
@@ -229,16 +248,16 @@ namespace VTU.Data.Models.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDateTime = new DateTime(2023, 4, 25, 22, 14, 39, 175, DateTimeKind.Local).AddTicks(7820),
+                            CreateDateTime = new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1300),
                             DataScope = "1",
                             DelFlag = 0,
                             DeptCheckStrictly = false,
                             MenuCheckStrictly = false,
-                            RoleKey = "*:*:*",
+                            RoleKey = "admin",
                             RoleName = "管理员",
                             RoleSort = 0,
-                            Status = 0,
-                            UpdateDateTime = new DateTime(2023, 4, 25, 22, 14, 39, 175, DateTimeKind.Local).AddTicks(7860)
+                            Status = 1,
+                            UpdateDateTime = new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1320)
                         });
                 });
 
@@ -262,10 +281,9 @@ namespace VTU.Data.Models.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("用户性别（0男 1女 2未知）");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int")
+                        .HasComment("用户性别(0=男,1=女,2=未知)");
 
                     b.Property<DateTime?>("LoginDate")
                         .HasColumnType("datetime2")
@@ -327,11 +345,11 @@ namespace VTU.Data.Models.Migrations
                             CreateDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DelFlag = 0,
                             Email = "dw@xmail.com",
-                            Gender = "1",
+                            Gender = 0,
                             NickName = "admin",
-                            Password = "ml5J9fuq7TP1iXXfrwFhyb4REi8suO1CSzXKvjr5CQY=",
+                            Password = "FWiumVdXOqkWHzXCXwXGDqxBZPJ+32nJRjm665ZQA14=",
                             Phonenumber = "12345678909",
-                            Salt = "+KVQyVitGS1zZfNwtcJo4g==",
+                            Salt = "V4MNurlZRVEi2gBvhF3cXg==",
                             Status = 0,
                             UpdateDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "admin"

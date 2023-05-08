@@ -35,7 +35,7 @@ public class EditMenuRequest
     /// 是否缓存（1缓存 0不缓存）
     /// </summary>
     [Description("是否缓存（1缓存 0不缓存）")]
-    public string? IsCache { get; set; }
+    public ValidStatus? IsCache { get; set; }
 
     /// <summary>
     /// 是否外链 

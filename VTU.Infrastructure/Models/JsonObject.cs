@@ -1,5 +1,5 @@
 using VTU.Infrastructure.Enums;
-using WebApplication1.Infrastructure.Extension;
+using VTU.Infrastructure.Extension;
 
 namespace VTU.Infrastructure.Models;
 

@@ -15,8 +15,9 @@ namespace VTU.Infrastructure.Extension
         /// <param name="services"></param>
         public static void AddAppService(this IServiceCollection services)
         {
-            var cls = new[] { "VTU.Service" };
-            foreach (var item in cls)
+            // 需要扫描的application路径
+            var appSettings = AppSettingInstants.GetAppSettings();
+            foreach (var item in appSettings.ScanServicePaths)
             {
                 Register(services, item);
             }

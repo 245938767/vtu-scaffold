@@ -9,12 +9,12 @@ using VTU.Service.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton(new AppSettingInstants(builder.Configuration));
 // Add services to the container.
 builder.Services.AddAppService();
 builder.Services.AddControllers(x => x.Filters.Add<GlobalExceptionFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSingleton(new AppSettingInstants(builder.Configuration));
 // init DB ORM
 builder.Services.AddDbContext<EntityDbContext>((_, o) => DataServiceCollectionExtensions.GetSql(o));
 builder.Services.AddSingleton<Func<EntityDbContext>>(s =>

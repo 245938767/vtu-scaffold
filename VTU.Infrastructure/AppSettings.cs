@@ -6,6 +6,7 @@ public class AppSettings
 {
     public JwtSettings JwtSettings { get; set; }
     public ConnectionStrings ConnectionStrings { get; set; }
+    public List<string> ScanServicePaths { get; set; }
 }
 
 public class JwtSettings

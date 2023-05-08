@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace WebApplication1.Infrastructure.Extension
+namespace VTU.Infrastructure.Extension
 {
     public static class EnumExtension
     {

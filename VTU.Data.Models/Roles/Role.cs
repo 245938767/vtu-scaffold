@@ -30,13 +30,13 @@ public class Role : BaseEntity
     /// 角色排序
     /// </summary>
     [Description("角色排序")]
-    public int RoleSort { get; set; }
+    public int RoleSort { get; set; } = 1;
 
     /// <summary>
     /// 角色状态
     /// </summary>
     [Description("角色状态")]
-    public ValidStatus Status { get; set; }
+    public ValidStatus Status { get; set; } = ValidStatus.Valid;
 
     /// <summary>
     /// 删除标志
@@ -87,6 +87,7 @@ public class Role : BaseEntity
         this.RoleKey = roleKey;
         this.RoleSort = sort ?? 1;
         this.DataScope = dataScope ?? "1";
+        this.Status = ValidStatus.Valid;
         preCreateTime();
         return this;
     }

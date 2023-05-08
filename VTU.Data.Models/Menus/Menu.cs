@@ -13,6 +13,7 @@ namespace VTU.Data.Models.Menus;
 [Description("菜单表")]
 public class Menu : BaseEntity
 {
+
     /// <summary>
     /// 菜单名称
     /// </summary>
@@ -24,14 +25,14 @@ public class Menu : BaseEntity
     /// </summary>
     [Description("父Id")]
     [ForeignKey(nameof(ParentId))]
-    public long? ParentId { get; set; }
+    public int? ParentId { get; set; } = 0;
 
 
     /// <summary>
     /// 显示顺序
     /// </summary>
     [Description("显示顺序")]
-    public int OrderNum { get; set; }
+    public int OrderNum { get; set; } = 1;
 
     /// <summary>
     /// 路由地址
@@ -48,14 +49,14 @@ public class Menu : BaseEntity
     /// <summary>
     /// 是否缓存（1缓存 0不缓存）
     /// </summary>
-    [Description("是否缓存（1缓存 0不缓存）")]
-    public string IsCache { get; set; }
+    [Description("是否缓存")]
+    public ValidStatus IsCache { get; set; } = ValidStatus.UnValid;
 
     /// <summary>
     /// 是否外链 
     /// </summary>
     [Description("是否外链")]
-    public ValidStatus IsFrame { get; set; }
+    public ValidStatus IsFrame { get; set; } = ValidStatus.UnValid;
 
     /// <summary>
     /// 类型（M目录 C菜单 F按钮 L链接）
@@ -67,13 +68,13 @@ public class Menu : BaseEntity
     /// 显示状态
     /// </summary>
     [Description("显示状态")]
-    public ValidStatus Visible { get; set; }
+    public ValidStatus Visible { get; set; } = ValidStatus.Valid;
 
     /// <summary>
     /// 菜单状态
     /// </summary>
     [Description("菜单状态")]
-    public ValidStatus Status { get; set; }
+    public ValidStatus Status { get; set; } = ValidStatus.Valid;
 
     /// <summary>
     /// 权限字符串
@@ -85,7 +86,7 @@ public class Menu : BaseEntity
     /// 菜单图标
     /// </summary>
     [Description("菜单图标")]
-    public string Icon { get; set; } = string.Empty;
+    public string? Icon { get; set; } = string.Empty;
 
     /// <summary>
     /// 菜单名key

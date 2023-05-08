@@ -18,17 +18,17 @@ namespace VTU.Data.Models.Migrations
                     Id = table.Column<int>(type: "int", nullable: false, comment: "ID")
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MenuName = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "菜单名称"),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true, comment: "父Id"),
+                    ParentId = table.Column<int>(type: "int", nullable: true, comment: "父Id"),
                     OrderNum = table.Column<int>(type: "int", nullable: false, comment: "显示顺序"),
                     Path = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "路由地址"),
                     Component = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "组件路径"),
-                    IsCache = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "是否缓存（1缓存 0不缓存）"),
+                    IsCache = table.Column<int>(type: "int", nullable: false, comment: "是否缓存(0=禁用,1=启用)"),
                     IsFrame = table.Column<int>(type: "int", nullable: false, comment: "是否外链(0=禁用,1=启用)"),
                     MenuType = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "类型（M目录 C菜单 F按钮 L链接）"),
                     Visible = table.Column<int>(type: "int", nullable: false, comment: "显示状态(0=禁用,1=启用)"),
                     Status = table.Column<int>(type: "int", nullable: false, comment: "菜单状态(0=禁用,1=启用)"),
                     Perms = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "权限字符串"),
-                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "菜单图标"),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "菜单图标"),
                     MenuNameKey = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "菜单名key"),
                     SubNum = table.Column<int>(type: "int", nullable: false),
                     MenuId = table.Column<int>(type: "int", nullable: true),
@@ -82,7 +82,7 @@ namespace VTU.Data.Models.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Password"),
                     Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "手机号"),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "用户性别（0男 1女 2未知）"),
+                    Gender = table.Column<int>(type: "int", nullable: false, comment: "用户性别(0=男,1=女,2=未知)"),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "密码加密的盐"),
                     Status = table.Column<int>(type: "int", nullable: false, comment: "帐号状态(0=禁用,1=启用)"),
                     DelFlag = table.Column<int>(type: "int", nullable: false, comment: "删除标志(0=禁用,1=启用)"),
@@ -147,14 +147,19 @@ namespace VTU.Data.Models.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "t_menu",
+                columns: new[] { "Id", "Component", "CreateDateTime", "Icon", "IsCache", "IsFrame", "MenuId", "MenuName", "MenuNameKey", "MenuType", "OrderNum", "ParentId", "Path", "Perms", "Status", "SubNum", "UpdateDateTime", "Visible" },
+                values: new object[] { 1, "", new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1390), null, 0, 0, null, "系统设置", "system", "M", 0, 0, "/system", "", 1, 0, new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1390), 1 });
+
+            migrationBuilder.InsertData(
                 table: "t_role",
                 columns: new[] { "Id", "CreateDateTime", "DataScope", "DelFlag", "DeptCheckStrictly", "MenuCheckStrictly", "RoleKey", "RoleName", "RoleSort", "Status", "UpdateDateTime" },
-                values: new object[] { 1, new DateTime(2023, 4, 25, 22, 14, 39, 175, DateTimeKind.Local).AddTicks(7820), "1", 0, false, false, "*:*:*", "管理员", 0, 0, new DateTime(2023, 4, 25, 22, 14, 39, 175, DateTimeKind.Local).AddTicks(7860) });
+                values: new object[] { 1, new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1300), "1", 0, false, false, "admin", "管理员", 0, 1, new DateTime(2023, 5, 8, 15, 7, 39, 43, DateTimeKind.Local).AddTicks(1320) });
 
             migrationBuilder.InsertData(
                 table: "t_user",
                 columns: new[] { "Id", "CreateDateTime", "DelFlag", "Email", "Gender", "LoginDate", "LoginIP", "NickName", "Password", "Phonenumber", "Salt", "Status", "UpdateDateTime", "UserName" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "dw@xmail.com", "1", null, null, "admin", "ml5J9fuq7TP1iXXfrwFhyb4REi8suO1CSzXKvjr5CQY=", "12345678909", "+KVQyVitGS1zZfNwtcJo4g==", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin" });
+                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "dw@xmail.com", 0, null, null, "admin", "FWiumVdXOqkWHzXCXwXGDqxBZPJ+32nJRjm665ZQA14=", "12345678909", "V4MNurlZRVEi2gBvhF3cXg==", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin" });
 
             migrationBuilder.InsertData(
                 table: "t_UserRoleTable",
