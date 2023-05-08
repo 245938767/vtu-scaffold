@@ -27,7 +27,7 @@ public interface IUserService
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public void LoginOut(long userId);
+    public void LoginOut(int userId);
 
     /// <summary>
     /// 用户注册方法
@@ -40,7 +40,7 @@ public interface IUserService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public UserResponse GetUserById(long id);
+    public UserResponse GetUserById(int id);
 
     /// <summary>
     /// 创建用户
@@ -59,5 +59,5 @@ public interface IUserService
     /// 删除用户ID
     /// </summary>
     /// <param name="userId"></param>
-    public void DeleteUser(long userId);
+    public void DeleteUser(int userId);
 }

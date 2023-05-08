@@ -4,6 +4,7 @@ using VTU.Infrastructure.Models;
 using VTU.Models.Request.Menus;
 using VTU.Models.Response.Menus;
 using VTU.Service.Filters;
+using VTU.Service.Menus;
 
 namespace VTU.WebApi.Controllers;
 
@@ -11,6 +12,13 @@ namespace VTU.WebApi.Controllers;
 [Verify]
 public class MenuController : BaseController
 {
+    private readonly IMenuService _menuService;
+
+    public MenuController(IMenuService menuService)
+    {
+        _menuService = menuService;
+    }
+
     /// <summary>
     /// 获取菜单列表
     /// </summary>
@@ -18,8 +26,7 @@ public class MenuController : BaseController
     [HttpGet("list")]
     public JsonObject<List<MenuResponse>> TreeMenuList()
     {
-        var menuResponses = new List<MenuResponse>();
-        return menuResponses;
+        return _menuService.SelectTreeMenuList();
     }
 
     /// <summary>
@@ -28,9 +35,9 @@ public class MenuController : BaseController
     /// <param name="menuId"></param>
     /// <returns></returns>
     [HttpGet("{menuId}")]
-    public JsonObject<string> GetMenuInfo(int menuId = 0)
+    public JsonObject<MenuResponse> GetMenuInfo(int menuId = 0)
     {
-        return "";
+        return _menuService.GetMenuByMenuId(menuId);
     }
 
     /// <summary>
@@ -44,26 +51,16 @@ public class MenuController : BaseController
         return "";
     }
 
-    /// <summary>
-    /// 获取角色菜单信息
-    /// 加载对应角色菜单列表树
-    /// </summary>
-    /// <param name="roleId"></param>
-    /// <returns></returns>        
-    [HttpGet("roleMenuTreeselect/{roleId}")]
-    public JsonObject<string> RoleMenuTreeselect(int roleId)
-    {
-        return "";
-    }
 
     /// <summary>
     /// 修改菜单
     /// </summary>
-    /// <param name="menuDto"></param>
+    /// <param name="editMenuRequest"></param>
     /// <returns></returns>
     [HttpPost("edit")]
-    public JsonObject<string> MenuEdit()
+    public JsonObject<string> MenuEdit([FromBody] EditMenuRequest editMenuRequest)
     {
+        _menuService.EditMenu(editMenuRequest);
         return "";
     }
 
@@ -75,6 +72,7 @@ public class MenuController : BaseController
     [HttpPut("add")]
     public JsonObject<string> MenuAdd([FromBody] CreateMenuRequest createMenuRequest)
     {
+        _menuService.AddMenu(createMenuRequest);
         return "";
     }
 
@@ -86,6 +84,7 @@ public class MenuController : BaseController
     [HttpDelete("{menuId}")]
     public JsonObject<string> Remove(int menuId = 0)
     {
+        _menuService.DeleteMenuById(menuId);
         return "";
     }
 
@@ -98,6 +97,7 @@ public class MenuController : BaseController
     [HttpGet("ChangeSort")]
     public JsonObject<string> ChangeSort(int id = 0, int value = 0)
     {
+        _menuService.ChangeSortMenu(id, value);
         return "";
     }
 }

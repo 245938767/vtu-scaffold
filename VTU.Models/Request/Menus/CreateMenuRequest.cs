@@ -1,12 +1,12 @@
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
+using Mapster;
+using VTU.Data.Models.Menus;
 using VTU.Infrastructure.Enums;
 
 namespace VTU.Models.Request.Menus;
 
 public class CreateMenuRequest
 {
-    
     /// <summary>
     /// 菜单名称
     /// </summary>
@@ -17,7 +17,6 @@ public class CreateMenuRequest
     /// 父菜单ID
     /// </summary>
     [Description("父Id")]
-    [ForeignKey(nameof(ParentId))]
     public long? ParentId { get; set; }
 
 
@@ -25,7 +24,7 @@ public class CreateMenuRequest
     /// 显示顺序
     /// </summary>
     [Description("显示顺序")]
-    public int OrderNum { get; set; }
+    public int OrderNum { get; set; } = 1;
 
     /// <summary>
     /// 路由地址
@@ -49,7 +48,7 @@ public class CreateMenuRequest
     /// 是否外链 
     /// </summary>
     [Description("是否外链")]
-    public ValidStatus IsFrame { get; set; }
+    public ValidStatus IsFrame { get; set; } = ValidStatus.UnValid;
 
     /// <summary>
     /// 类型（M目录 C菜单 F按钮 L链接）
@@ -61,7 +60,7 @@ public class CreateMenuRequest
     /// 显示状态
     /// </summary>
     [Description("显示状态")]
-    public ValidStatus Visible { get; set; }
+    public ValidStatus Visible { get; set; } = ValidStatus.Valid;
 
     /// <summary>
     /// 菜单状态
@@ -85,6 +84,11 @@ public class CreateMenuRequest
     /// 菜单名key
     /// </summary>
     [Description("菜单名key")]
-    public string MenuNameKey { get; set; }
+    public string? MenuNameKey { get; set; }
 
+    public Menu ToMenu()
+    {
+        var adaptMenu = this.Adapt<Menu>();
+        return adaptMenu;
+    }
 }

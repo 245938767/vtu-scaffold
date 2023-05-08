@@ -14,12 +14,12 @@ public class BaseController : ControllerBase
     /// </summary>
     /// <returns>用户ID</returns>
     /// <exception cref="BusinessException"></exception>
-    protected long CurrentUId()
+    protected int CurrentUId()
     {
         var loginUserClaims = JwtHelper.GetLoginUserClaims(HttpContext);
 
         var value = loginUserClaims?.FirstOrDefault(x => x.Type == ClaimConstant.PrimarySid)?.Value;
-        return !string.IsNullOrEmpty(value) ? long.Parse(value) : throw new BusinessException("获取用户信息失败");
+        return !string.IsNullOrEmpty(value) ? int.Parse(value) : throw new BusinessException("获取用户信息失败");
     }
 
     /// <summary>

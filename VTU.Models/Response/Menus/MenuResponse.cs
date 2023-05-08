@@ -1,14 +1,12 @@
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using VTU.Data.Models.Menus;
 using VTU.Data.Models.Roles;
 using VTU.Infrastructure.Enums;
 
 namespace VTU.Models.Response.Menus;
 
-public class MenuResponse:Infrastructure.Models.Response
+public class MenuResponse : Infrastructure.Models.Response
 {
-    
     /// <summary>
     /// 菜单名称
     /// </summary>
@@ -19,8 +17,7 @@ public class MenuResponse:Infrastructure.Models.Response
     /// 父菜单ID
     /// </summary>
     [Description("父Id")]
-    [ForeignKey(nameof(ParentId))]
-    public long? ParentId { get; set; }
+    public int ParentId { get; set; } = 0;
 
 
     /// <summary>

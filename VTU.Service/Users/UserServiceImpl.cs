@@ -33,7 +33,7 @@ public class UserServiceImpl : IUserService
         return queryable;
     }
 
-    public UserResponse GetUserById(long id)
+    public UserResponse GetUserById(int id)
     {
         var firstOrDefault = _dbContext.Users.Include(x => x.Roles).FirstOrDefault(x => x.Id == id);
         if (firstOrDefault == null)
@@ -80,7 +80,6 @@ public class UserServiceImpl : IUserService
         if (editUserRequest.Phonenumber != null)
         {
             editUser.Phonenumber = editUserRequest.Phonenumber;
-            // asQueryable=asQueryable.Where()
         }
 
         if (editUserRequest.Email != null)
@@ -96,7 +95,7 @@ public class UserServiceImpl : IUserService
 
         if (editUserRequest.NickName != null)
         {
-            editUser.NickName = editUserRequest.NickName;
+            editUser.NickName = editUserRequest.NickName?? editUser.NickName;
         }
 
         if (asQueryable.Any())
@@ -112,7 +111,7 @@ public class UserServiceImpl : IUserService
         }
     }
 
-    public void DeleteUser(long userId)
+    public void DeleteUser(int userId)
     {
         var firstOrDefaultUser = _dbContext.Users.Include(x => x.Roles).FirstOrDefault(x => x.Id == userId);
         if (firstOrDefaultUser == null)
@@ -165,7 +164,7 @@ public class UserServiceImpl : IUserService
         return generateJwtToken;
     }
 
-    public void LoginOut(long userId)
+    public void LoginOut(int userId)
     {
         CacheHelper.Remove($"{GlobalConstant.UserPermKey}{userId}");
     }

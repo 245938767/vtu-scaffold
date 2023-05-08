@@ -35,9 +35,9 @@ public class UserController : BaseController
     /// 获得用户信息
     /// </summary>
     /// <returns></returns>
-    [HttpGet("/userInfo/{userId:long}")]
+    [HttpGet("/userInfo/{userId:int}")]
     [PermissionFilter("user:info")]
-    public JsonObject<UserResponse> GetUserInfo(long userId)
+    public JsonObject<UserResponse> GetUserInfo(int userId)
     {
         return _userService.GetUserById(userId);
     }
@@ -74,8 +74,8 @@ public class UserController : BaseController
     /// <param name="userId"></param>
     /// <returns></returns>
     [PermissionFilter("user:delete")]
-    [HttpPost("/delete/{userId:long}")]
-    public JsonObject<string> DeleteUser(long userId)
+    [HttpPost("/delete/{userId:int}")]
+    public JsonObject<string> DeleteUser(int userId)
     {
         _userService.DeleteUser(userId);
         return "";
