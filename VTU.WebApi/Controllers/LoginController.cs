@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using VTU.BaseApi.Controller;
 using VTU.Infrastructure.Models;
 using VTU.Models.Request.Users;
+using VTU.Models.Response.Users;
 using VTU.Service.Filters;
 using VTU.Service.Users;
 
@@ -24,6 +25,12 @@ public class LoginController : BaseController
     public JsonObject<string> LoginUser([FromBody] LoginRequest loginRequest)
     {
         return _userService.Login(loginRequest, getIP());
+    }
+
+    [HttpPost("/userInfo")]
+    public JsonObject<UserResponse> getUserInfo()
+    {
+        return _userService.GetUserById(CurrentUId());
     }
 
     [HttpPost("/loginOut")]

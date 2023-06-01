@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using VTU.Infrastructure.Constant;
+using VTU.Infrastructure.Models;
 using VTU.Service.Helper;
 
 namespace VTU.Service.Filters
@@ -44,12 +45,7 @@ namespace VTU.Service.Filters
             //检查信息
             if (info == null)
             {
-                JsonResult results = new(new
-                {
-                    Code = 500,
-                    Msg = $"你当前没有权限访问或者已过期，请先登录",
-                    Data = url
-                })
+                JsonResult results = new(JsonObject<string>.Fail(url, $"你当前没有权限访问或者已过期，请先登录"))
                 {
                     ContentType = "application/json",
                 };
@@ -79,12 +75,8 @@ namespace VTU.Service.Filters
             //有权限或者是通用（Common）层就通过
             if (HasRole || Permission.Equals("common")) return base.OnActionExecutionAsync(context, next);
             Console.WriteLine($"用户{info.UserName}没有权限访问{url}，当前权限[{Permission}]");
-            JsonResult result = new(new
-            {
-                Code = 500,
-                Msg = $"你当前没有权限[{Permission}]访问,请联系管理员",
-                Data = url
-            })
+            
+            JsonResult result = new(JsonObject<string>.Fail(url, $"你当前没有权限[{Permission}]访问,请联系管理员"))
             {
                 ContentType = "application/json",
             };

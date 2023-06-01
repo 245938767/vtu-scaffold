@@ -1,4 +1,5 @@
 using VTU.Infrastructure.Extension;
+using VTU.Infrastructure.Models;
 using VTU.Service.Helper;
 
 namespace VTU.Service.Filters;
@@ -45,12 +46,8 @@ public class VerifyAttribute : Attribute, IAuthorizationFilter
         Console.WriteLine($"{msg}");
 
 
-        JsonResult result = new(new
-        {
-            Code = 500,
-            Msg = msg,
-            Data = url
-        })
+        ;
+        JsonResult result = new(JsonObject<string>.Fail(url, msg))
         {
             ContentType = "application/json",
         };
